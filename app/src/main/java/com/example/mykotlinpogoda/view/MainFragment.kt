@@ -1,24 +1,32 @@
-package com.example.mykotlinpogoda
+package com.example.mykotlinpogoda.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.mykotlinpogoda.R
+import com.example.mykotlinpogoda.model.Weather
 import com.example.mykotlinpogoda.databinding.MainFragmentBinding
+import com.example.mykotlinpogoda.mainmodel.AppState
+import com.example.mykotlinpogoda.mainmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance(bundle: Bundle?): DetailFragment {
+
+            val fragment = DetailFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
-
+    private val adapter = MainAdapter()
 
     private lateinit var viewModel: MainViewModel
 
@@ -33,30 +41,47 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)
-            .get(MainViewModel::class.java)
-            //подписались на изменения live data
-        viewModel.getData().observe(viewLifecycleOwner, { state->
-            render(state) })
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        binding.MainRecyclerView.adapter = adapter
+
+       adapter.listener = MainAdapter.OnItemClick {weather ->
+
+           val bundel =Bundle()
+           bundel.putParcelable("WEATHER_EXTRA",weather)
+
+           requireActivity().supportFragmentManager.beginTransaction()
+          .replace(R.id.main_container,DetailFragment.newInstance(bundel))
+           .addToBackStack("")
+           .commit() }
+
+
+        //подписались на изменения live data
+        viewModel.getData().observe(viewLifecycleOwner, { state ->
+            render(state)
+        })
+
+
         //запросили новые данные
-        viewModel.getWeather()
+        viewModel.getWeatherFromLocalStorageRus()
 
 
     }
 
     private fun render(state: AppState) {
         when (state) {
-            is AppState.Success -> {
+            is AppState.Success<*> -> {
+
+                val weather: List<Weather> = state.data as List<Weather>
+                adapter.setWeather(weather)
                 binding.LinerLoading.visibility = View.GONE
-                binding.cityName.text = state.weater.city
-                binding.temperature.text = state.weater.temperature.toString()
             }
             is AppState.Error -> {
                 binding.LinerLoading.visibility = View.VISIBLE
                 Snackbar.make(binding.root, state.error.toString(), Snackbar.LENGTH_INDEFINITE)
                     .setAction("попробовать снова") {
                         //запросили новые данные
-                        viewModel.getWeather()
+                        viewModel.getWeatherFromLocalStorageRus()
                     }.show()
             }
             is AppState.Loading ->
