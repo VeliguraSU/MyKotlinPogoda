@@ -11,8 +11,16 @@ import com.example.mykotlinpogoda.databinding.DetailFragmentBinding
 class DetailFragment : Fragment() {
 
     companion object {
-        fun newInstance(bundel: Bundle) = DetailFragment()
+        fun newInstance(bundle: Bundle):DetailFragment{
+            val fragment = DetailFragment()
+            fragment.arguments = bundle
+
+            return fragment
+
+        }
+
     }
+
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
@@ -38,43 +46,6 @@ class DetailFragment : Fragment() {
 
 
     }
-
-//        viewModel = ViewModelProvider(this)
-//            .get(DetailViewModel::class.java)
-//            //подписались на изменения live data
-//        viewModel.getData().observe(viewLifecycleOwner, { state->
-//            render(state as AppState) })
-//        //запросили новые данные
-//        viewModel.getData()
-//
-//
-//    }
-////
-////    private fun render(state: AppState) {
-//        when (state) {
-//            is AppState.Success<*> -> {
-//
-//                val weather=state.data as Weather
-//
-//                binding.LinerLoading.visibility = View.GONE
-//                binding.cityName.text = weather.city.name
-//                binding.temperature.text = weather.temperature.toString()
-//            }
-//            is AppState.Error -> {
-//                binding.LinerLoading.visibility = View.VISIBLE
-//                Snackbar.make(binding.root, state.error.toString(), Snackbar.LENGTH_INDEFINITE)
-//                    .setAction("попробовать снова") {
-//                        //запросили новые данные
-//                        viewModel.getData()
-//                    }.show()
-//            }
-//            is AppState.Loading ->
-//                binding.LinerLoading.visibility = View.VISIBLE
-//
-//
-//        }
-//
-//    }
 
     override fun onDestroy() {
         super.onDestroy()

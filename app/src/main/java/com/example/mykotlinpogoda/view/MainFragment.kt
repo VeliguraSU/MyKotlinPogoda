@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mykotlinpogoda.R
-import com.example.mykotlinpogoda.model.Weather
 import com.example.mykotlinpogoda.databinding.MainFragmentBinding
 import com.example.mykotlinpogoda.mainmodel.AppState
 import com.example.mykotlinpogoda.mainmodel.MainViewModel
+import com.example.mykotlinpogoda.model.Weather
 import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
@@ -27,7 +27,7 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
     private val adapter = MainAdapter()
-
+    private var isRussia = true
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -45,15 +45,18 @@ class MainFragment : Fragment() {
 
         binding.MainRecyclerView.adapter = adapter
 
-       adapter.listener = MainAdapter.OnItemClick {weather ->
+//        binding.MainRecyclerView.layoutManager= LinerLayoutManager(requireActivity())
 
-           val bundel =Bundle()
-           bundel.putParcelable("WEATHER_EXTRA",weather)
+        adapter.listener = MainAdapter.OnItemClick { weather ->
 
-           requireActivity().supportFragmentManager.beginTransaction()
-          .replace(R.id.main_container,DetailFragment.newInstance(bundel))
-           .addToBackStack("")
-           .commit() }
+            val bundel = Bundle()
+            bundel.putParcelable("WEATHER_EXTRA", weather)
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container, DetailFragment.newInstance(bundel))
+                .addToBackStack("")
+                .commit()
+        }
 
 
         //подписались на изменения live data
@@ -65,6 +68,17 @@ class MainFragment : Fragment() {
         //запросили новые данные
         viewModel.getWeatherFromLocalStorageRus()
 
+        binding.MainFAB.setOnClickListener {
+            isRussia = !isRussia
+            if (isRussia) {
+                viewModel.getWeatherFromLocalStorageRus()
+                binding.MainFAB.setImageResource(R.drawable.ic_baseline_outlined_flag_24)
+            } else {
+                viewModel.getWeatherFromLocalStorageWorld()
+                binding.MainFAB.setImageResource(R.drawable.ic_baseline_flag_24)
+
+            }
+        }
 
     }
 
@@ -98,3 +112,5 @@ class MainFragment : Fragment() {
     }
 
 }
+
+

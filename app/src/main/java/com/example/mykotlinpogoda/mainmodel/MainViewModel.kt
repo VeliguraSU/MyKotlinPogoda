@@ -18,18 +18,18 @@ class MainViewModel : ViewModel() {
     fun getWeatherFromRemoteSourse() = getDataFromLocalStorage(true)
 
     private fun getDataFromLocalStorage(isRussia: Boolean = true) {
-     liveDataToObserver.value = AppState.Loading
+        liveDataToObserver.value = AppState.Loading
 
         Thread {
             Thread.sleep(1000)
 
 
-
-                val weather =if (isRussia){
-                    repo.getWeatherFromLocalStorageRus()
-                } else{
-                    repo.getWeatherFromLocalStorageWorld()}
-                liveDataToObserver.postValue(AppState.Success(weather))
+            val weather = if (isRussia) {
+                repo.getWeatherFromLocalStorageRus()
+            } else {
+                repo.getWeatherFromLocalStorageWorld()
+            }
+            liveDataToObserver.postValue(AppState.Success(weather))
 
         }.start()
     }
