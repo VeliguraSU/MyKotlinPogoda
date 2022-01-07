@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:id="@+id/container">
+    tools:context=".view.MainActivity"
+    android:id="@+id/main_container"
+  >
 
     <fragment
-        android:name="com.example.mykotlinpogoda.MainFragment"
+        android:name="com.example.mykotlinpogoda.view.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
