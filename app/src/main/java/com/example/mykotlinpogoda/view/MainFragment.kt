@@ -22,6 +22,7 @@ class MainFragment : Fragment() {
             fragment.arguments = bundle
             return fragment
         }
+
     }
 
     private var _binding: MainFragmentBinding? = null

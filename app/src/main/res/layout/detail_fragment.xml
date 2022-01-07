@@ -23,12 +23,60 @@
             android:text="Москва"
             android:textSize="30sp" />
 
+
+
+        <TextView
+            android:id="@+id/cityCoordinates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            tools:text="lt/ln: 55.755826, 37.617299900000035" />
+
+        <TextView
+            android:id="@+id/weatherCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+                       tools:text="Облачно" />
+
+        <TextView
+            android:id="@+id/temperatureLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/temperature_label"
+           />
+
         <TextView
             android:id="@+id/temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10"
-            android:textSize="30sp" />
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+
+            tools:text="+15" />
+
+        <TextView
+            android:id="@+id/feelsLikeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/feels_like_label"
+            />
+
+        <TextView
+            android:id="@+id/feelsLikeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+
+            tools:text="-23" />
+
 
     </LinearLayout>
 <LinearLayout
